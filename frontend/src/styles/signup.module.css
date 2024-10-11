@@ -70,15 +70,12 @@ html, body {
     object-fit: cover;
 }
 
-.signup-container div:last-child {
+.signup-section {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     width: 100%;
-}
-
-.signup-section {
     height: 100%;
     z-index: 100;
 }
@@ -104,13 +101,7 @@ html, body {
 .SP-tf-2,
 .SP-tf-3 {
     padding-top: 1rem;
-    width: 100%;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    
-    input {
-        padding-left: 1.5rem;
-    }
+    width: 80%;
 }
 
 @media screen and (max-width: 1000px) and (min-width: 700px) {

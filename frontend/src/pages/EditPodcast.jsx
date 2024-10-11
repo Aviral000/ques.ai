@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaPlus } from "react-icons/fa6";
 import { GoPencil } from "react-icons/go";
 import { FaPodcast } from "react-icons/fa";
@@ -12,17 +12,21 @@ import { IoArrowBack } from "react-icons/io5";
 
 import styles from '../styles/editpodcast.module.css';
 import logo from '../assets/QuesLogo 1 (1).png';
-import vector from '../assets/Vector.png'
+import Swal from 'sweetalert2';
 
 import { Button, TextField, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { api } from '../config/api';
+import axios from 'axios';
 
 export default function AddPodcast() {
+    const navigate = useNavigate();
+    const token = localStorage.getItem('token');
     const [description, setDescription] = useState('');
-    const [transcript, setTranscript] = useState(
-        "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
-      );
     const [edit, setEdit] = useState(false);
+    const { projectId, episodeId } = useParams();
+    const [username, setUsername] = useState('Username');
+    const [email, setEmail] = useState('Email');
 
     const handleEdit = () => {
         setEdit(true);
@@ -32,18 +36,69 @@ export default function AddPodcast() {
         setEdit(false);
     }
 
-    const handleSave = () => {
-        setEdit(false);
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get(`${api.url}/user-info`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        setUsername(response.data.data.username);
+        setEmail(response.data.data.email);
+      } catch (error) {
+        console.log(error);
+      }
     }
+
+    const handleSave = async () => {
+      try {
+        const response = await axios.put(`${api.url2}/${projectId}/episodes/${episodeId}`, {
+          description: description
+        }, 
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        Swal.fire({
+          icon: 'success',
+          title: 'Updation',
+          text: 'You have successfully updated the Description',
+          confirmButtonText: 'OK'
+        });
+        setEdit(false);
+      } catch(error) {
+        console.log(error);
+      }
+    }
+
+    const fetchEpisode = async () => {
+      try {
+        const response = await axios.get(`${api.url2}/${projectId}/episodes/${episodeId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        console.log(response.data);
+        setDescription(response.data.episode.description);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    
+    useEffect(() => {
+      fetchEpisode();
+      fetchUser();
+    }, [])
   
   return (
     <div className={styles.podcastcontainer}>
       <div className={styles.sidebar}>
         <div className={styles.upperside}>
-          <div className={styles.img}>
+          <div className={styles.img} onClick={() => navigate('/')}>
               <img src={logo} alt="logo" />
           </div>
-          <div className={styles.add}>
+          <div className={styles.add} onClick={() => navigate(`/${projectId}/addpodcast`)}>
             <FaPlus />
             <Typography variant='p'>Add your Podcast(s)</Typography>
           </div>
@@ -67,9 +122,12 @@ export default function AddPodcast() {
             <Typography variant='p'>Help</Typography>
           </div>
           <div className='horizontal line'><hr /></div>
-          <div className={styles.add1}>
+          <div className={styles.add1} onClick={() => navigate('/user-detail')}>
             <CiUser />
-            <Typography variant='p'>Username</Typography>
+            <Typography variant='p'>
+              <div>{username}</div>
+              <div>{email}</div>
+            </Typography>
           </div>
         </div>
       </div>
@@ -88,15 +146,19 @@ export default function AddPodcast() {
         </nav>
         <div className={styles.heading}>
             <div>
-                <Link to='/addpodcast'>
+                <Link to={`/${projectId}/addpodcast`}>
                     <IoArrowBack />
                 </Link>
                 <Typography variant='h4' style={{ fontWeight: '600' }}>Edit Transcript</Typography>
             </div>
             <div>
-                <Button color="error" onClick={handleCancel}>
+                {!edit ? (<Button color="warning" variant="outlined" onClick={() => navigate(`/${projectId}/addpodcast`)}>
+                    Go Back
+                </Button>) : (
+                <Button color="warning" variant="outlined" onClick={handleCancel}>
                     Cancel
                 </Button>
+                )}
                 {!edit ? (<Button color="primary" variant="contained" onClick={handleEdit}>
                     Edit
                 </Button>) : (
@@ -113,8 +175,8 @@ export default function AddPodcast() {
                 rows={20}
                 variant="outlined"
                 placeholder="Type here"
-                value={transcript}
-                onChange={(e) => setTranscript(e.target.value)}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
                 margin="dense"
                 sx={{
                     backgroundColor: 'white'

@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 import { Button, TextField } from '@mui/material'
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios'
+import Swal from 'sweetalert2'
 
 import Wallpaper from '../assets/Rectangle 135.png'
 import logo from '../assets/QuesLogo 1.png'
@@ -7,16 +10,38 @@ import logo2 from '../assets/Group 22.png'
 import vector from '../assets/Isolation Mode.png'
 
 import styles from '../styles/signup.module.css'
+import { api } from '../config/api';
 
 export default function Signup() {
+const navigate = useNavigate();
 const [userDetail, setUserDetail] = useState({
   username: '',
   email: '',
   password: ''
 })
 
-const handleSignup = () => {
-  
+const handleSignup = async () => {
+  try {
+    const response = await axios.post(`${api.url}/signup`, {
+        username: userDetail.username,
+        email: userDetail.email,
+        password: userDetail.password
+    })
+    Swal.fire({
+        icon: 'success',
+        title: 'Signup Successful',
+        text: 'Your account has been created successfully!',
+        confirmButtonText: 'OK'
+    });
+    navigate('/login')
+} catch (error) {
+    Swal.fire({
+        icon: 'error',
+        title: 'Signup Failed',
+        text: error || 'Something went wrong. Please try again.',
+        confirmButtonText: 'OK'
+    });
+  }
 }
 
   return (
@@ -50,6 +75,8 @@ const handleSignup = () => {
               value={userDetail.username}
               onChange={(e) => setUserDetail({...userDetail, username: e.target.value})}
               fullWidth
+              margin='none'
+              helperText="**Username should be 6 character long**"
             />
           </div>
           <div className={styles['SP-tf-2']}>
@@ -76,10 +103,20 @@ const handleSignup = () => {
             <Button
               variant="contained"
               sx={{
-                background: 'black',
+                background: 'green',
                 marginTop: '1rem'
               }}
+              onClick={handleSignup}
             >Signup</Button>
+            <Button
+              variant="contained"
+              sx={{
+                background: 'red',
+                marginTop: '1rem',
+                marginLeft: "1rem"
+              }}
+              onClick={() => navigate('/login')}
+            >Login</Button>
           </div>
         </div>
     </div>

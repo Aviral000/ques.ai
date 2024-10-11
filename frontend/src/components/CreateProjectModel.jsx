@@ -1,19 +1,56 @@
 import React, { useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Typography } from '@mui/material';
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
-import styles from '../styles/CreateProjectModel.module.css'
+import styles from '../styles/CreateProjectModel.module.css';
+import { api } from '../config/api';
 
-export default function CreateProjectModal({ open, handleClose }) {
+export default function CreateProjectModal({ open, handleClose, fetchProjects }) {
+  const token = localStorage.getItem('token');
   const [projectName, setProjectName] = useState('');
   const [error, setError] = useState('');
 
-  const handleCreate = () => {
-    if (!projectName) {
-      setError("Project Name Can't be empty");
-    } else {
-      console.log('Project Created:', projectName);
-      setError('');
-      handleClose();
+  const handleCreate = async () => {
+    try {
+      if (!projectName) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Project Creation',
+          text: 'Please type the project name',
+          confirmButtonText: 'OK'
+        });
+      } else {
+        const response = await axios.post(`${api.url2}/`,
+          {
+            projectName: projectName
+          }, 
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          })
+
+        const projectId = response.data.project._id;
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Project Creation',
+          text: 'You have successfully created a Project',
+          confirmButtonText: 'OK'
+        });
+        handleClose();
+        setProjectName('');
+        fetchProjects();
+      }
+    } catch (error) {
+      console.error('Error creating project:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Project Creation',
+        text: 'An error occurred while creating the project',
+        confirmButtonText: 'OK'
+      });
     }
   };
 

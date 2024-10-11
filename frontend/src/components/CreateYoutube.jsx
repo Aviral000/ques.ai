@@ -2,20 +2,57 @@ import React, { useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Typography } from '@mui/material';
 import styles from '../styles/createyoutube.module.css';
 import image2 from '../assets/image 2.png';
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import { api } from '../config/api';
+import { useParams } from 'react-router-dom';
 
-export default function CreateYoutube({ open, handleClose }) {
+export default function CreateYoutube({ open, handleClose, fetchEpisodes }) {
   const [projectName, setProjectName] = useState('');
   const [link, setLink] = useState('');
   const [transcription, setTranscription] = useState('');
   const [error, setError] = useState('');
+  const { projectId } = useParams();
 
-  const handleCreate = () => {
-    if (!projectName || !link || !transcription) {
-      setError("All fields are required!");
-    } else {
-      console.log('Project Created:', { projectName, link, transcription });
-      setError('');
-      handleClose();
+  const token = localStorage.getItem('token');
+
+  const handleCreate = async () => {
+    try {
+      if (!projectName || !link || !transcription) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Episode Creation',
+          text: 'Please fill all the columns',
+          confirmButtonText: 'OK'
+        });
+      } else {
+        Swal.fire({
+          icon: 'success',
+          title: 'Episode Creation',
+          text: 'Episode created successfully',
+          confirmButtonText: 'OK'
+        });
+        const response = await axios.post(`${api.url2}/${projectId}/episodes`,
+        {
+          title: projectName,
+          link: link,
+          description: transcription
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        handleClose();
+        fetchEpisodes();
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Episode Creation',
+        text: error ? error : 'Error from the server',
+        confirmButtonText: 'OK'
+      });
     }
   };
 

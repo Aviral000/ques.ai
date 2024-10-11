@@ -8,6 +8,7 @@ import Login from './pages/Login'
 import Homepage from './pages/Homepage'
 import AddPodcast from './pages/AddPodcast'
 import EditPodcast from './pages/EditPodcast'
+import UserPage from './pages/UserPage'
 
 export default function App() {
   return (
@@ -15,8 +16,9 @@ export default function App() {
       <Router>
         <Routes>
           <Route path='/' element={<Homepage />} />
-          <Route path='/addpodcast' element={<AddPodcast />} />
-          <Route path='/editpodcast' element={<EditPodcast />} />
+          <Route path='/:projectId/addpodcast' element={<AddPodcast />} />
+          <Route path='/:projectId/editpodcast/:episodeId' element={<EditPodcast />} />
+          <Route path='/user-detail' element={<UserPage />} />
           <Route path='/signup' element={<Signup />} />
           <Route path='/login' element={<Login />} />
         </Routes>

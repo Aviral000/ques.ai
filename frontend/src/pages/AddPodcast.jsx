@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaPlus } from "react-icons/fa6";
 import { GoPencil } from "react-icons/go";
 import { FaPodcast } from "react-icons/fa";
@@ -18,9 +18,19 @@ import vector from '../assets/Vector.png'
 import CreateYoutube from '../components/CreateYoutube';
 
 import { Button, Typography } from '@mui/material';
+import axios from 'axios';
+import { api } from '../config/api';
+import Swal from 'sweetalert2';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function AddPodcast() {
+  const token = localStorage.getItem('token');
   const [openModal, setOpenModal] = useState(false);
+  const [username, setUsername] = useState('Username');
+  const [email, setEmail] = useState('Email');
+  const navigate = useNavigate();
+  const [episodes, setEpisodes] = useState([]);
+  const { projectId } = useParams();
 
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -29,12 +39,81 @@ export default function AddPodcast() {
   const handleCloseModal = () => {
     setOpenModal(false);
   };
+
+  const fetchUser = async () => {
+    try {
+      const response = await axios.get(`${api.url}/user-info`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      setUsername(response.data.data.username);
+      setEmail(response.data.data.email);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const fetchEpisodes = async () => {
+    try {
+      const response = await axios.get(`${api.url2}/${projectId}/episodes`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      setEpisodes(response.data.project.episodes)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    fetchUser();
+    fetchEpisodes();
+  }, [])
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('loggin');
+    navigate('/');
+  }
+
+  const handleDeleteEpisode = async (episodeId) => {
+    console.log(episodeId);
+    try {
+      const response = await axios.delete(`${api.url2}/${projectId}/episodes/${episodeId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      Swal.fire({
+        icon: 'success',
+        title: 'Deletion',
+        text: 'You have successfully deleted a episode',
+        confirmButtonText: 'OK'
+      });
+      fetchEpisodes();
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Deletion',
+        text: 'Server not responding',
+        confirmButtonText: 'OK'
+      });
+    }
+  }
+
+  const formatDate = (dateString) => {
+    if (!dateString) return 'N/A';
+    const date = new Date(dateString);
+    return isNaN(date.getTime()) ? 'Invalid Date' : date.toLocaleDateString();
+  };
   
   return (
     <div className={styles.podcastcontainer}>
       <div className={styles.sidebar}>
         <div className={styles.upperside}>
-          <div className={styles.img}>
+          <div className={styles.img} onClick={() => navigate('/')}>
               <img src={logo} alt="logo" />
           </div>
           <div className={styles.add}>
@@ -61,9 +140,12 @@ export default function AddPodcast() {
             <Typography variant='p'>Help</Typography>
           </div>
           <div className='horizontal line'><hr /></div>
-          <div className={styles.add1}>
+          <div className={styles.add1} onClick={() => navigate('/user-detail')}>
             <CiUser />
-            <Typography variant='p'>Username</Typography>
+            <Typography variant='p'>
+              <div>{username}</div>
+              <div>{email}</div>
+            </Typography>
           </div>
         </div>
       </div>
@@ -77,7 +159,7 @@ export default function AddPodcast() {
           </div>
           <div className={styles.icons}>
             <div className={styles.icon1}><IoIosNotificationsOutline /></div>
-            <div className={styles.icon2}><IoMdExit /></div>
+            <div className={styles.icon2} onClick={handleLogout}><IoMdExit /></div>
           </div>
         </nav>
         <div className={styles.heading}>
@@ -112,16 +194,59 @@ export default function AddPodcast() {
             </div>
           </div>
         </div>
-        <div className={styles.upload}>
-          <div>
-            <img src={vector} alt="" />
-          </div>
-          <p className={styles.line1}>Select a file or drag and drop here (Podcast Media or Transcription Text)</p>
-          <p className={styles.line2}>MP4, MOV, MP3, WAV, PDF, DOCX or TXT file </p>
-          <Button variant="outlined" sx={{ borderRadius: '1rem' }}>Select File</Button>
+
+        <div className={ episodes.length === 0 ? styles.upload:styles.table}>
+          { episodes.length === 0 ? (
+          <>
+            <div>
+              <img src={vector} alt="" />
+            </div>
+            <p className={styles.line1}>Select a file or drag and drop here (Podcast Media or Transcription Text)</p>
+            <p className={styles.line2}>MP4, MOV, MP3, WAV, PDF, DOCX or TXT file </p>
+            <Button variant="outlined" sx={{ borderRadius: '1rem' }}>Select File</Button>
+          </>
+          ) : (
+            <div className={styles.tableContainer}>
+              <table className={styles.episodeTable}>
+                <thead>
+                  <tr>
+                    <th>S.No.</th>
+                    <th>Name</th>
+                    <th>Upload Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {episodes.map((episode, index) => (
+                    <tr key={episode._id}>
+                      <td>{index + 1}</td>
+                      <td>{episode.title}</td>
+                      <td>{formatDate(episode.createdAt)}</td>
+                      <td>
+                        <Button
+                          variant="outlined"
+                          style={{ marginRight: '10px' }}
+                          onClick={() => navigate(`/${projectId}/editpodcast/${episode._id}`)}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          variant="outlined"
+                          color="error"
+                          onClick={() => handleDeleteEpisode(episode._id)}
+                        >
+                          Delete
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </div>
-      <CreateYoutube open={openModal} handleClose={handleCloseModal}/>
+      <CreateYoutube open={openModal} handleClose={handleCloseModal} fetchEpisodes={fetchEpisodes}/>
     </div>
   )
 }
