@@ -1,0 +1,178 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+.signup-container {
+    display: grid;
+    grid-template-columns: 70% 30%;
+    height: 100%;
+}
+
+.SP-hero-section {
+    height: 100%;
+    position: relative;
+}
+
+.SP-hero-image {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.SP-hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.SP-logo {
+    position: absolute;
+    z-index: 10;
+    padding-left: 4rem;
+    padding-top: 4rem;
+    color: white;
+
+    .lato-regular {
+        padding-top: 2rem;
+        font-size: 5rem;
+        font-family: "Lato", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        word-spacing: 3px;
+    }
+
+    .lato-thin {
+        padding-top: 1rem;
+        font-size: 2rem;
+        font-family: "Lato", sans-serif;
+        font-weight: 300;
+        font-style: normal;
+    }
+}
+
+.SP-vector {
+    position: absolute;
+    z-index: 10;
+    bottom: 0;
+}
+
+.SP-vector img {
+    width: 100%;
+    object-fit: cover;
+}
+
+.signup-container div:last-child {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+.signup-section {
+    height: 100%;
+    z-index: 100;
+}
+
+.SP-heading {
+    color: #7E22CE;
+    font-family: "Lato", sans-serif;
+    font-style: normal;
+    text-align: center;
+
+    p {
+        font-size: 3rem;
+        font-weight: 300;
+    }
+
+    h2 {
+        font-size: 2.5rem;
+        font-weight: 600;
+    }
+}
+
+.SP-tf-1,
+.SP-tf-2,
+.SP-tf-3 {
+    padding-top: 1rem;
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    
+    input {
+        padding-left: 1.5rem;
+    }
+}
+
+@media screen and (max-width: 1000px) and (min-width: 700px) {
+    
+    .SP-logo {
+    
+        .lato-regular {
+            font-size: 3rem;
+            word-spacing: 1px;
+        }
+    
+        .lato-thin {
+            padding-top: 1rem;
+            font-size: 1rem;
+        }
+    }
+}
+
+@media screen and (max-width: 699px) and (min-width: 450px) {
+
+    .signup-container {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .SP-logo {
+
+        img {
+            width: 50%;
+            height: 50%;
+        }
+
+        .lato-regular {
+            font-size: 2rem;
+        }
+    
+        .lato-thin {
+            font-size: .7rem;
+        }
+    }
+}
+
+@media screen and (max-width: 449px) {
+    .signup-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .SP-logo {
+        padding-left: 1rem;
+
+        img {
+            width: 50%;
+            height: 50%;
+        }
+
+        .lato-regular {
+            font-size: 2rem;
+        }
+    
+        .lato-thin {
+            font-size: .7rem;
+        }
+    }
+}

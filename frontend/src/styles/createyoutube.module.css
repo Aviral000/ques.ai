@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
+.createmodel {
+    font-family: "Lato", sans-serif;
+    font-style: normal;
+}
+
+.title {
+    color: #6D28D9;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.img2 img {
+    width: 1rem;
+    height: 1rem;
+}
+
+.buttonsubmit {
+    background-color: #6D28D9;
+}
