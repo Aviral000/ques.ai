@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import CreateIcon from '@mui/icons-material/Create';
 import MicIcon from '@mui/icons-material/Mic';
@@ -23,6 +23,7 @@ import { api } from '../config/api';
 import Swal from 'sweetalert2';
 import { useNavigate, useParams } from 'react-router-dom';
 import { productContext } from '../contextAPI/productProvider';
+import gsap from 'gsap';
 
 export default function AddPodcast() {
   const token = localStorage.getItem('token');
@@ -33,6 +34,11 @@ export default function AddPodcast() {
   const [episodes, setEpisodes] = useState([]);
   const { projectId } = useParams();
   const { setProductId } = useContext(productContext);
+  const sidebarRef = useRef(null);
+  const navbarRef = useRef(null);
+  const mainbodyRef = useRef(null);
+  const mainbodyRef1 = useRef(null);
+  const mainbodyRef2 = useRef(null);
 
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -116,9 +122,63 @@ export default function AddPodcast() {
     navigate('/user-detail');
   };
 
+  useLayoutEffect(() => {
+    const sidebar = sidebarRef.current;
+    const navbar = navbarRef.current;
+    const mainbody = mainbodyRef.current;
+    const mainbody1 = mainbodyRef1.current;
+    const mainbody2 = mainbodyRef2.current;
+
+    gsap.fromTo(sidebar, {
+      x: '-30%',
+      opacity: 0
+    }, {
+      x: '0',
+      opacity: 1,
+      duration: 1
+    });
+
+    gsap.fromTo(navbar, {
+      y: '30%',
+      opacity: 0
+    }, {
+      y: '0',
+      opacity: 1,
+      duration: 1
+    });
+
+    gsap.fromTo(mainbody1, {
+      x: '100%',
+      opacity: 0
+    }, {
+      x: '0',
+      opacity: 1,
+      duration: 1,
+      delay: .4
+    });
+
+    gsap.fromTo(mainbody2, {
+      opacity: 0
+    }, {
+      opacity: 1,
+      duration: 1,
+      delay: .7
+    });
+
+    gsap.fromTo(mainbody, {
+      y: '30%',
+      opacity: 0
+    }, {
+      y: '0',
+      opacity: 1,
+      duration: 1,
+      delay: 1
+    });
+  }, [])
+
   return (
     <div className={styles.podcastcontainer}>
-      <div className={styles.sidebar}>
+      <div className={styles.sidebar} ref={sidebarRef}>
         <div className={styles.upperside}>
           <div className={styles.img} onClick={() => navigate('/')}>
             <img src={logo} alt="logo" />
@@ -161,7 +221,7 @@ export default function AddPodcast() {
         </div>
       </div>
       <div className={styles.maincontent}>
-        <nav className={styles.navbar}>
+        <nav className={styles.navbar} ref={navbarRef}>
           <div className={styles.left}>
             <div>
               <HomeIcon />
@@ -179,12 +239,12 @@ export default function AddPodcast() {
             </div>
           </div>
         </nav>
-        <div className={styles.heading}>
+        <div className={styles.heading} ref={mainbodyRef1}>
           <Typography variant="h4" style={{ fontWeight: '600' }}>
             Add Podcast
           </Typography>
         </div>
-        <div className={styles.cards}>
+        <div className={styles.cards} ref={mainbodyRef2}>
           <div className={styles.card1}>
             <div className={styles.subcard1}>
               <Typography variant="h6" style={{ fontWeight: '600' }}>
@@ -220,7 +280,7 @@ export default function AddPodcast() {
           </div>
         </div>
 
-        <div className={episodes.length === 0 ? styles.upload : styles.table}>
+        <div className={episodes.length === 0 ? styles.upload : styles.table} ref={mainbodyRef}>
           {episodes.length === 0 ? (
             <>
               <div>
