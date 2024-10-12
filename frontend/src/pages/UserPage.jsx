@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react'
 import AddIcon from '@mui/icons-material/Add';
-import { GoPencil } from "react-icons/go";
-import { FaPodcast } from "react-icons/fa";
-import { RiVipDiamondLine } from "react-icons/ri";
-import { CiSettings } from "react-icons/ci";
-import { CiUser } from "react-icons/ci";
-import { IoIosNotificationsOutline } from "react-icons/io";
-import { IoMdExit } from "react-icons/io";
+import EditIcon from '@mui/icons-material/Edit';
+import MicIcon from '@mui/icons-material/Mic';
+import DiamondIcon from '@mui/icons-material/Diamond';
+import SettingsIcon from '@mui/icons-material/Settings';
+import PersonIcon from '@mui/icons-material/Person';
+import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import styles from '../styles/userpage.module.css';
 import logo from '../assets/QuesLogo 1 (1).png';
@@ -42,7 +43,7 @@ export default function UserPage() {
 
   const fetchEpisodes = async () => {
     try {
-      const response = await axios.get(`${api.url2}/${projectId}/episodes`, {
+      const response = await axios.get(`${api.url2}/${productId}/episodes`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -98,27 +99,27 @@ export default function UserPage() {
             <Typography variant='p'>Add your Podcast(s)</Typography>
           </div>
           <div className={styles.add1}>
-            <GoPencil />
+            <EditIcon />
             <Typography variant='p'>Create and Repurpose</Typography>
           </div>
           <div className={styles.add1}>
-            <FaPodcast />
+            <MicIcon />
             <Typography variant='p'>Podcast Widget</Typography>
           </div>
           <div className={styles.add1}>
-            <RiVipDiamondLine />
+            <DiamondIcon />
             <Typography variant='p'>Upgrades</Typography>
           </div>
           <div className='horizontal line'><hr /></div>
         </div>
         <div className={styles.lowerside}>
           <div className={styles.add1}>
-            <CiSettings />
+            <SettingsIcon />
             <Typography variant='p'>Help</Typography>
           </div>
           <div className='horizontal line'><hr /></div>
           <div className={styles.add1}>
-            <CiUser />
+            <PersonIcon />
             <Typography variant='p'>
               <div>{username}</div>
               <div>{email}</div>
@@ -130,15 +131,15 @@ export default function UserPage() {
         <nav className={styles.navbar}>
           <div className={styles.left}>
             <div onClick={() => navigate(-1)} style={{ cursor: 'pointer' }}>
-              <FaArrowLeft />
+              <ArrowBackIcon />
             </div>
             <div className={styles.endpoint}>
               Home Page / Sample Project / <span className={styles.lefth}>Account Settings</span>
             </div>
           </div>
           <div className={styles.icons}>
-            <div className={styles.icon1}><IoIosNotificationsOutline /></div>
-            <div className={styles.icon2} onClick={handleLogout}><IoMdExit /></div>
+            <div className={styles.icon1}><NotificationsOutlinedIcon /></div>
+            <div className={styles.icon2} onClick={handleLogout}><ExitToAppIcon /></div>
           </div>
         </nav>
         <div className={styles.heading}>
@@ -146,7 +147,7 @@ export default function UserPage() {
         </div>
         <div className={styles.profile}>
           <div className={styles.profileIcon}>
-            <CiUser size={100} />
+            <PersonIcon sx={{ fontSize: 100 }} />
           </div>
           <div className={styles.userInfo}>
             <TextField

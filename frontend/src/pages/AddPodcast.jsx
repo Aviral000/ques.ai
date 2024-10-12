@@ -1,20 +1,20 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
-import { GoPencil } from "react-icons/go";
-import { FaPodcast } from "react-icons/fa";
-import { RiVipDiamondLine } from "react-icons/ri";
-import { CiSettings } from "react-icons/ci";
-import { CiUser } from "react-icons/ci";
-import { GoHome } from "react-icons/go";
-import { IoIosNotificationsOutline } from "react-icons/io";
-import { IoMdExit } from "react-icons/io";
+import CreateIcon from '@mui/icons-material/Create';
+import MicIcon from '@mui/icons-material/Mic';
+import DiamondIcon from '@mui/icons-material/Diamond';
+import SettingsIcon from '@mui/icons-material/Settings';
+import PersonIcon from '@mui/icons-material/Person';
+import HomeIcon from '@mui/icons-material/Home';
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 import styles from '../styles/addpodcast.module.css';
 import logo from '../assets/QuesLogo 1 (1).png';
-import image1 from '../assets/image 1.png'
-import image2 from '../assets/image 2.png'
-import image3 from '../assets/ic_round-upload.png'
-import vector from '../assets/Vector.png'
+import image1 from '../assets/image 1.png';
+import image2 from '../assets/image 2.png';
+import image3 from '../assets/ic_round-upload.png';
+import vector from '../assets/Vector.png';
 import CreateYoutube from '../components/CreateYoutube';
 
 import { Button, Typography } from '@mui/material';
@@ -48,13 +48,13 @@ export default function AddPodcast() {
         headers: {
           Authorization: `Bearer ${token}`
         }
-      })
+      });
       setUsername(response.data.data.username);
       setEmail(response.data.data.email);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const fetchEpisodes = async () => {
     try {
@@ -62,23 +62,23 @@ export default function AddPodcast() {
         headers: {
           Authorization: `Bearer ${token}`
         }
-      })
-      setEpisodes(response.data.project.episodes)
+      });
+      setEpisodes(response.data.project.episodes);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     fetchUser();
     fetchEpisodes();
-  }, [])
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     sessionStorage.removeItem('loggin');
     navigate('/');
-  }
+  };
 
   const handleDeleteEpisode = async (episodeId) => {
     console.log(episodeId);
@@ -91,7 +91,7 @@ export default function AddPodcast() {
       Swal.fire({
         icon: 'success',
         title: 'Deletion',
-        text: 'You have successfully deleted a episode',
+        text: 'You have successfully deleted an episode',
         confirmButtonText: 'OK'
       });
       fetchEpisodes();
@@ -103,7 +103,7 @@ export default function AddPodcast() {
         confirmButtonText: 'OK'
       });
     }
-  }
+  };
 
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
@@ -113,43 +113,47 @@ export default function AddPodcast() {
 
   const handleUser = () => {
     setProductId(projectId);
-    navigate('/user-detail')
-  }
-  
+    navigate('/user-detail');
+  };
+
   return (
     <div className={styles.podcastcontainer}>
       <div className={styles.sidebar}>
         <div className={styles.upperside}>
           <div className={styles.img} onClick={() => navigate('/')}>
-              <img src={logo} alt="logo" />
+            <img src={logo} alt="logo" />
           </div>
           <div className={styles.add}>
             <AddIcon />
-            <Typography variant='p'>Add your Podcast(s)</Typography>
+            <Typography variant="p">Add your Podcast(s)</Typography>
           </div>
           <div className={styles.add1}>
-            <GoPencil />
-            <Typography variant='p'>Create and Repurpose</Typography>
+            <CreateIcon />
+            <Typography variant="p">Create and Repurpose</Typography>
           </div>
           <div className={styles.add1}>
-            <FaPodcast />
-            <Typography variant='p'>Podcast Widget</Typography>
+            <MicIcon />
+            <Typography variant="p">Podcast Widget</Typography>
           </div>
           <div className={styles.add1}>
-            <RiVipDiamondLine />
-            <Typography variant='p'>Upgrades</Typography>
+            <DiamondIcon />
+            <Typography variant="p">Upgrades</Typography>
           </div>
-          <div className='horizontal line'><hr /></div>
+          <div className="horizontal line">
+            <hr />
+          </div>
         </div>
         <div className={styles.lowerside}>
           <div className={styles.add1}>
-            <CiSettings />
-            <Typography variant='p'>Help</Typography>
+            <SettingsIcon />
+            <Typography variant="p">Help</Typography>
           </div>
-          <div className='horizontal line'><hr /></div>
+          <div className="horizontal line">
+            <hr />
+          </div>
           <div className={styles.add1} onClick={handleUser}>
-            <CiUser />
-            <Typography variant='p'>
+            <PersonIcon />
+            <Typography variant="p">
               <div>{username}</div>
               <div>{email}</div>
             </Typography>
@@ -160,31 +164,43 @@ export default function AddPodcast() {
         <nav className={styles.navbar}>
           <div className={styles.left}>
             <div>
-              <GoHome />
+              <HomeIcon />
             </div>
-            <div className={styles.endpoint}>Home Page / Sample Project / <span className={styles.lefth}>Add your Podcast</span></div>
+            <div className={styles.endpoint}>
+              Home Page / Sample Project / <span className={styles.lefth}>Add your Podcast</span>
+            </div>
           </div>
           <div className={styles.icons}>
-            <div className={styles.icon1}><IoIosNotificationsOutline /></div>
-            <div className={styles.icon2} onClick={handleLogout}><IoMdExit /></div>
+            <div className={styles.icon1}>
+              <NotificationsNoneIcon />
+            </div>
+            <div className={styles.icon2} onClick={handleLogout}>
+              <ExitToAppIcon />
+            </div>
           </div>
         </nav>
         <div className={styles.heading}>
-          <Typography variant='h4' style={{ fontWeight: '600' }}>Add Podcast</Typography>
+          <Typography variant="h4" style={{ fontWeight: '600' }}>
+            Add Podcast
+          </Typography>
         </div>
         <div className={styles.cards}>
           <div className={styles.card1}>
             <div className={styles.subcard1}>
-            <Typography variant='h6' style={{ fontWeight: '600' }}>RSS Feed</Typography>
+              <Typography variant="h6" style={{ fontWeight: '600' }}>
+                RSS Feed
+              </Typography>
               <div>Lorem ipsum dolor sit. Dolor lorem sit.</div>
             </div>
             <div>
-              <img src={image1} alt="rcc-feed" />
+              <img src={image1} alt="rss-feed" />
             </div>
           </div>
           <div className={styles.card1} onClick={handleOpenModal}>
             <div className={styles.subcard1}>
-            <Typography variant='h6' style={{ fontWeight: '600' }}>Youtube Videos</Typography>
+              <Typography variant="h6" style={{ fontWeight: '600' }}>
+                Youtube Videos
+              </Typography>
               <div>Lorem ipsum dolor sit. Dolor lorem sit.</div>
             </div>
             <div>
@@ -193,7 +209,9 @@ export default function AddPodcast() {
           </div>
           <div className={styles.card1}>
             <div className={styles.subcard1}>
-            <Typography variant='h6' style={{ fontWeight: '600' }}>Upload Files</Typography>
+              <Typography variant="h6" style={{ fontWeight: '600' }}>
+                Upload Files
+              </Typography>
               <div>Lorem ipsum dolor sit. Dolor lorem sit.</div>
             </div>
             <div>
@@ -202,16 +220,20 @@ export default function AddPodcast() {
           </div>
         </div>
 
-        <div className={ episodes.length === 0 ? styles.upload:styles.table}>
-          { episodes.length === 0 ? (
-          <>
-            <div>
-              <img src={vector} alt="" />
-            </div>
-            <p className={styles.line1}>Select a file or drag and drop here (Podcast Media or Transcription Text)</p>
-            <p className={styles.line2}>MP4, MOV, MP3, WAV, PDF, DOCX or TXT file </p>
-            <Button variant="outlined" sx={{ borderRadius: '1rem' }}>Select File</Button>
-          </>
+        <div className={episodes.length === 0 ? styles.upload : styles.table}>
+          {episodes.length === 0 ? (
+            <>
+              <div>
+                <img src={vector} alt="" />
+              </div>
+              <p className={styles.line1}>
+                Select a file or drag and drop here (Podcast Media or Transcription Text)
+              </p>
+              <p className={styles.line2}>MP4, MOV, MP3, WAV, PDF, DOCX or TXT file </p>
+              <Button variant="outlined" sx={{ borderRadius: '1rem' }}>
+                Select File
+              </Button>
+            </>
           ) : (
             <div className={styles.tableContainer}>
               <table className={styles.episodeTable}>
