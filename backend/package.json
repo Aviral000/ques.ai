@@ -4,8 +4,7 @@
   "description": "ques.ai backend",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "start": "nodemon src/index.js"
   },
   "author": "Aviral Malik",
   "license": "ISC",
