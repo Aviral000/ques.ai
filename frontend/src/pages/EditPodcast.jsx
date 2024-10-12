@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { FaPlus } from "react-icons/fa6";
+import AddIcon from '@mui/icons-material/Add';
 import { GoPencil } from "react-icons/go";
 import { FaPodcast } from "react-icons/fa";
 import { RiVipDiamondLine } from "react-icons/ri";
@@ -112,7 +112,7 @@ export default function AddPodcast() {
               <img src={logo} alt="logo" />
           </div>
           <div className={styles.add} onClick={() => navigate(`/${projectId}/addpodcast`)}>
-            <FaPlus />
+            <AddIcon />
             <Typography variant='p'>Add your Podcast(s)</Typography>
           </div>
           <div className={styles.add1}>
