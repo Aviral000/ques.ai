@@ -39,6 +39,28 @@ export default function Homepage() {
     }
   }
 
+  const formatTimeAgo = (updatedAt) => {
+    const now = new Date();
+    const updatedDate = new Date(updatedAt);
+    const timeDiff = Math.abs(now - updatedDate);
+    const diffInHours = Math.floor(timeDiff / (1000 * 60 * 60));
+    const diffInDays = Math.floor(diffInHours / 24);
+
+    if (diffInHours < 24) {
+      return 'less than a day ago';
+    } else if (diffInDays === 1) {
+      return '1 day ago';
+    } else if (diffInDays < 7) {
+      return `${diffInDays} days ago`;
+    } else if (diffInDays < 30) {
+      const weeks = Math.floor(diffInDays / 7);
+      return weeks === 1 ? '1 week ago' : `${weeks} weeks ago`;
+    } else {
+      const months = Math.floor(diffInDays / 30);
+      return months === 1 ? '1 month ago' : `${months} months ago`;
+    }
+  };
+
   useEffect(() => {
     fetchProjects();
   }, [])
@@ -101,7 +123,7 @@ export default function Homepage() {
                   <div className="project-info">
                     <Typography variant="subtitle1" className={styles.projectname}>{project.projectName}</Typography>
                     <Typography variant="body2">{project.episodes.length} episodes</Typography>
-                    <Typography variant="caption">Last edited on {project.updatedAt}</Typography>
+                    <Typography variant="caption">Last edited {formatTimeAgo(project.updatedAt)}</Typography>
                   </div>
                 </div>
               ))}
