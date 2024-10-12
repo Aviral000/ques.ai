@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { FaPlus } from "react-icons/fa6";
 import { GoPencil } from "react-icons/go";
 import { FaPodcast } from "react-icons/fa";
@@ -18,6 +18,7 @@ import { Button, TextField, Typography } from '@mui/material';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { api } from '../config/api';
 import axios from 'axios';
+import { productContext } from '../contextAPI/productProvider';
 
 export default function AddPodcast() {
     const navigate = useNavigate();
@@ -27,6 +28,7 @@ export default function AddPodcast() {
     const { projectId, episodeId } = useParams();
     const [username, setUsername] = useState('Username');
     const [email, setEmail] = useState('Email');
+    const { setProductId } = useContext(productContext);
 
     const handleEdit = () => {
         setEdit(true);
@@ -90,6 +92,11 @@ export default function AddPodcast() {
       fetchEpisode();
       fetchUser();
     }, [])
+
+    const handleUser = () => {
+      setProductId(projectId);
+      navigate('/user-detail')
+    }
   
   return (
     <div className={styles.podcastcontainer}>
@@ -122,7 +129,7 @@ export default function AddPodcast() {
             <Typography variant='p'>Help</Typography>
           </div>
           <div className='horizontal line'><hr /></div>
-          <div className={styles.add1} onClick={() => navigate('/user-detail')}>
+          <div className={styles.add1} onClick={handleUser}>
             <CiUser />
             <Typography variant='p'>
               <div>{username}</div>

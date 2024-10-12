@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { FaPlus } from "react-icons/fa6";
 import { GoPencil } from "react-icons/go";
 import { FaPodcast } from "react-icons/fa";
@@ -22,6 +22,7 @@ import axios from 'axios';
 import { api } from '../config/api';
 import Swal from 'sweetalert2';
 import { useNavigate, useParams } from 'react-router-dom';
+import { productContext } from '../contextAPI/productProvider';
 
 export default function AddPodcast() {
   const token = localStorage.getItem('token');
@@ -31,6 +32,7 @@ export default function AddPodcast() {
   const navigate = useNavigate();
   const [episodes, setEpisodes] = useState([]);
   const { projectId } = useParams();
+  const { setProductId } = useContext(productContext);
 
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -108,6 +110,11 @@ export default function AddPodcast() {
     const date = new Date(dateString);
     return isNaN(date.getTime()) ? 'Invalid Date' : date.toLocaleDateString();
   };
+
+  const handleUser = () => {
+    setProductId(projectId);
+    navigate('/user-detail')
+  }
   
   return (
     <div className={styles.podcastcontainer}>
@@ -140,7 +147,7 @@ export default function AddPodcast() {
             <Typography variant='p'>Help</Typography>
           </div>
           <div className='horizontal line'><hr /></div>
-          <div className={styles.add1} onClick={() => navigate('/user-detail')}>
+          <div className={styles.add1} onClick={handleUser}>
             <CiUser />
             <Typography variant='p'>
               <div>{username}</div>

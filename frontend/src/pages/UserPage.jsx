@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { FaArrowLeft, FaPlus } from "react-icons/fa6";
 import { GoPencil } from "react-icons/go";
 import { FaPodcast } from "react-icons/fa";
@@ -16,6 +16,7 @@ import axios from 'axios';
 import { api } from '../config/api';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import { productContext } from '../contextAPI/productProvider';
 
 export default function UserPage() {
   const token = localStorage.getItem('token');
@@ -23,14 +24,7 @@ export default function UserPage() {
   const [email, setEmail] = useState('Email');
   const navigate = useNavigate();
   const [isEdited, setIsEdited] = useState(false);
-
-  const handleOpenModal = () => {
-    setOpenModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setOpenModal(false);
-  };
+  const { productId } = useContext(productContext);
 
   const fetchUser = async () => {
     try {
@@ -96,10 +90,10 @@ export default function UserPage() {
     <div className={styles.podcastcontainer}>
       <div className={styles.sidebar}>
         <div className={styles.upperside}>
-          <div className={styles.img} onClick={() => navigate('/')}>
+          <div className={styles.img} onClick={() => navigate(-1)}>
               <img src={logo} alt="logo" />
           </div>
-          <div className={styles.add}>
+          <div className={styles.add} onClick={() => navigate(`/${productId}/addpodcast`)}>
             <FaPlus />
             <Typography variant='p'>Add your Podcast(s)</Typography>
           </div>
