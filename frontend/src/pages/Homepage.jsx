@@ -45,7 +45,7 @@ export default function Homepage() {
 
   return (
     <>
-      {loggin ? (<Container className={styles.homepageContainer}>
+      <Container className={styles.homepageContainer}>
         <Box className={styles.header}>
           <img src={logo} alt="Ques.AI Logo" className={styles.logo} />
           <Box className={styles.headerIcons}>
@@ -68,7 +68,7 @@ export default function Homepage() {
           <Typography variant="body1" align="center" className={styles.description}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
           </Typography>
-          <Button
+          {loggin ? (<Button
             variant="contained"
             color="primary"
             className={styles.createButton}
@@ -76,7 +76,7 @@ export default function Homepage() {
             onClick={handleOpenModal}
           >
             + Create New Project
-          </Button>
+          </Button>) : (
           <Button
             variant="contained"
             color="primary"
@@ -88,7 +88,7 @@ export default function Homepage() {
             }}
           >
             Login
-          </Button>
+          </Button>)}
         </Box>) : (
           <>
             <div style={{ color: '#6D28D9' }}>
@@ -116,28 +116,7 @@ export default function Homepage() {
           </>
         )}
         <CreateProjectModal open={openModal} handleClose={handleCloseModal} navigate={navigate} fetchProjects={fetchProjects} />
-      </Container>) : (
-        <>
-          <h4>Please loggin First or Signup</h4>
-          <Button
-            variant="contained"
-            sx={{
-              background: 'green',
-              marginTop: '1rem'
-            }}
-            onClick={() => navigate('/login')}
-          >Login</Button>
-          <Button
-            variant="contained"
-            sx={{
-              background: 'red',
-              marginTop: '1rem',
-              marginLeft: "1rem"
-            }}
-            onClick={() => navigate('/signup')}
-          >Signup</Button>
-        </>
-      )}
+      </Container>
     </>
   );
 }

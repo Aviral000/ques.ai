@@ -76,7 +76,7 @@ export default function AddPodcast() {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    localStorage.removeItem('loggin');
+    sessionStorage.removeItem('loggin');
     navigate('/');
   }
 

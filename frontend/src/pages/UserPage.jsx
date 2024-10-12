@@ -82,7 +82,7 @@ export default function UserPage() {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    localStorage.removeItem('loggin');
+    sessionStorage.removeItem('loggin');
     navigate('/');
   }
   

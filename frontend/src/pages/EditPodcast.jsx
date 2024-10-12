@@ -97,6 +97,12 @@ export default function AddPodcast() {
       setProductId(projectId);
       navigate('/user-detail')
     }
+
+    const handleLogout = () => {
+      localStorage.removeItem('token');
+      sessionStorage.removeItem('loggin');
+      navigate('/');
+    }
   
   return (
     <div className={styles.podcastcontainer}>
@@ -148,7 +154,7 @@ export default function AddPodcast() {
           </div>
           <div className={styles.icons}>
             <div className={styles.icon1}><IoIosNotificationsOutline /></div>
-            <div className={styles.icon2}><IoMdExit /></div>
+            <div className={styles.icon2} onClick={handleLogout}><IoMdExit /></div>
           </div>
         </nav>
         <div className={styles.heading}>
