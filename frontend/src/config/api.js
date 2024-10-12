@@ -1,6 +1,6 @@
 const api = {
-    url: 'http://127.0.0.1:8082/api/auth',
-    url2: 'http://127.0.0.1:8082/api/projects'
+    url: 'https://ques-ai-9bsc.onrender.com/api/auth',
+    url2: 'https://ques-ai-9bsc.onrender.com/api/projects'
 }
 
 export { api };
